@@ -80,7 +80,6 @@ tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-	finalizedBy("jacocoTestReport")
 }
 
 tasks.named<JacocoReport>("jacocoTestReport") {
