@@ -9,6 +9,16 @@ resource "google_artifact_registry_repository" "todo" {
   format        = "DOCKER"
   mode          = "STANDARD_REPOSITORY"
 
+  cleanup_policies {
+    id     = "keep-last-2"
+    action = "KEEP"
+    most_recent_versions {
+      keep_count = 2
+    }
+  }
+
+  cleanup_policy_dry_run = false
+
   depends_on = [google_project_service.artifactregistry]
 }
 
