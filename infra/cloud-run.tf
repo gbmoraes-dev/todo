@@ -75,3 +75,21 @@ resource "google_cloud_run_v2_service" "todo" {
     google_secret_manager_secret_version.jwt_secret,
   ]
 }
+
+resource "google_cloud_run_domain_mapping" "todo" {
+  location = var.region
+  name     = var.domain
+
+  metadata {
+    namespace = var.project_id
+  }
+
+  spec {
+    route_name = google_cloud_run_v2_service.todo.name
+  }
+}
+
+output "domain_mapping_records" {
+  description = "DNS records to configure in Cloudflare"
+  value       = google_cloud_run_domain_mapping.todo.status[0].resource_records
+}

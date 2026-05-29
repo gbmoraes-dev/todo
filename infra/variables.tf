@@ -14,6 +14,11 @@ variable "region" {
   default     = "us-central1"
 }
 
+variable "domain" {
+  description = "Custom domain for the API"
+  type        = string
+}
+
 variable "image" {
   description = "Docker image URL"
   type        = string
