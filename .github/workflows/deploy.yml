@@ -41,7 +41,7 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main'
     outputs:
-      image: ${{ steps.meta.outputs.tags }}
+      image: ${{ steps.build.outputs.digest }}
 
     permissions:
       contents: read
@@ -73,6 +73,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
