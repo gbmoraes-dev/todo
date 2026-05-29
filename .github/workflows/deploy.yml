@@ -101,4 +101,4 @@ jobs:
         with:
           service: todo
           region: ${{ secrets.GCP_REGION }}
-          image: ${{ needs.build.outputs.image }}
+          image: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/todo/app@${{ needs.build.outputs.image }}
