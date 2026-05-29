@@ -4,6 +4,14 @@ resource "google_cloud_run_v2_service" "todo" {
 
   deletion_protection = false
 
+  lifecycle {
+    ignore_changes = [
+      template,
+      client,
+      client_version,
+    ]
+  }
+
   template {
     containers {
       image = var.image
@@ -73,7 +81,16 @@ resource "google_cloud_run_v2_service" "todo" {
     google_secret_manager_secret_version.database_user,
     google_secret_manager_secret_version.database_password,
     google_secret_manager_secret_version.jwt_secret,
+    google_project_iam_member.compute_secret_accessor,
   ]
+}
+
+resource "google_cloud_run_v2_service_iam_member" "public" {
+  project  = google_cloud_run_v2_service.todo.project
+  location = google_cloud_run_v2_service.todo.location
+  name     = google_cloud_run_v2_service.todo.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
 }
 
 resource "google_cloud_run_domain_mapping" "todo" {
@@ -87,9 +104,4 @@ resource "google_cloud_run_domain_mapping" "todo" {
   spec {
     route_name = google_cloud_run_v2_service.todo.name
   }
-}
-
-output "domain_mapping_records" {
-  description = "DNS records to configure in Cloudflare"
-  value       = google_cloud_run_domain_mapping.todo.status[0].resource_records
 }
