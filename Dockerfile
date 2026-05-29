@@ -17,7 +17,7 @@ FROM eclipse-temurin:21-jre-alpine AS runtime
 
 WORKDIR /app
 
-RUN addgroup -S group && adduser -S user -G appgroup
+RUN addgroup -S group && adduser -S user -G group
 
 USER user
 
